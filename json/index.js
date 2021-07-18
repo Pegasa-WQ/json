@@ -1,6 +1,12 @@
 const input = document.getElementById('input');
-let endFile = 0;
 const container = document.querySelector('.container');
+const h1 = document.getElementsByTagName('h1');
+const downloadButton = document.getElementById('button');
+
+let endFile = 0;
+let form = 0;
+let label = 0;
+let div = 0;
 
 function download(input) {
     let file = input.files[0];
@@ -15,12 +21,6 @@ function download(input) {
     };
 
 }
-
-
-const h1 = document.getElementsByTagName('h1');
-let form = 0;
-let label = 0;
-let div = 0;
 
 function createInput(array) {
     for (let i in array) {
@@ -81,7 +81,8 @@ function createInput(array) {
 
 
 function createReferences(array) {
-    div = document.createElement('div')
+    div = document.createElement('div');
+    div.classList.add("check");
     form.append(div);
     for (let i in array) {
         let arrayKeys = Object.keys(array[i]);
@@ -132,23 +133,20 @@ function andere(array, object) {
             createReferences(arrayReferences);
         }
         else if (array[key] == 'buttons') {
-            object[array[key]].forEach(el => form.append(createButton(el)));
+            object[array[key]].forEach(el => div.append(createButton(el)));
         }
     }
 }
-
-
-
-
 
 window.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#button').addEventListener('click', function () {
         if (endFile !== 0 && form == 0) {
             form = document.createElement('form')
-            let object = JSON.parse(`${endFile}`);
+            let object = JSON.parse(endFile);
             let objectKeys = Object.keys(object);
             andere(objectKeys, object);
             endFile = 0;
+            downloadButton.setAttribute('disabled', 'disabled')
         }
     })
 })
@@ -159,5 +157,6 @@ window.addEventListener('DOMContentLoaded', function () {
         input.value = '';
         endFile = 0;
         form = 0;
+        downloadButton.removeAttribute('disabled')
     })
 })
